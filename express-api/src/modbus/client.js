@@ -10,7 +10,7 @@
  */
 
 const ModbusRTU = require('modbus-serial');
-const { SYSTEM_REGISTERS, VEBUS_REGISTERS, VEBUS_STATES, BATTERY_STATES } = require('./registers');
+const { SYSTEM_REGISTERS, VEBUS_REGISTERS, VEBUS_STATES, BATTERY_STATES } = require('../../registers');
 
 class VictronModbusClient {
   constructor(config) {
