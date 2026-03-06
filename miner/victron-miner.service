@@ -1,0 +1,42 @@
+# /etc/systemd/system/victron-miner.service
+#
+# Service systemd pour le démarrage automatique du mineur solaire
+#
+# Installation :
+#   sudo cp victron-miner.service /etc/systemd/system/
+#   sudo systemctl daemon-reload
+#   sudo systemctl enable victron-miner
+#   sudo systemctl start victron-miner
+#
+# Logs :
+#   sudo journalctl -u victron-miner -f
+
+[Unit]
+Description=Victron Solar Miner — Minage crypto sur surplus solaire
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=VOTRE_UTILISATEUR          # ← Remplacez par votre nom d'utilisateur Linux
+
+# Chemin absolu du script — adaptez selon où vous avez mis le projet
+ExecStart=/opt/victron-miner/scripts/victron-miner.sh daemon
+
+# Redémarrage automatique si le script plante (pas si arrêt volontaire)
+Restart=on-failure
+RestartSec=30s
+
+# Variables d'environnement
+Environment="HOME=/home/VOTRE_UTILISATEUR"
+
+# Logs
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=victron-miner
+
+# Donne accès aux binaires GPU (nécessaire pour T-Rex / CUDA)
+Environment="PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+
+[Install]
+WantedBy=multi-user.target
